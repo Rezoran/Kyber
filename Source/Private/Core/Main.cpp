@@ -4,6 +4,7 @@
 #include <Base/Platform.h>
 #include <Base/Version.h>
 #include <Core/Program.h>
+#include <cstdio>
 
 #include <string>
 

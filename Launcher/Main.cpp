@@ -38,6 +38,7 @@ bool dllUpdating = false;
 
 std::filesystem::path kyberDllPath;
 
+/*
 void DownloadDLL()
 {
     dllUpdating = true;
@@ -58,12 +59,13 @@ void DownloadDLL()
         dllUpdating = false;
     });
 }
+*/
 
 void InjectDLL()
 {
     if (!std::filesystem::exists(kyberDllPath))
     {
-        DownloadDLL();
+        MessageBoxA(NULL, "Failed to load Kyber.dll", "Kyber Launcher", MB_OK);
         return;
     }
 
@@ -99,14 +101,14 @@ void InjectDLL()
         return;
     }
 
-    LPVOID remoteDLL = VirtualAllocEx(hProc, NULL, file.string().size(), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+    LPVOID remoteDLL = VirtualAllocEx(hProc, NULL, kyberDllPath.string().size(), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
     if (remoteDLL == NULL)
     {
         MessageBoxA(NULL, "Failed to allocate memory in starwarsbattlefrontii.exe", "Kyber Launcher", MB_OK);
         return;
     }
 
-    if (!WriteProcessMemory(hProc, remoteDLL, file.string().c_str(), file.string().size(), NULL))
+    if (!WriteProcessMemory(hProc, remoteDLL, kyberDllPath.string().c_str(), kyberDllPath.string().size(), NULL))
     {
         MessageBoxA(NULL, "Failed to write memory in starwarsbattlefrontii.exe", "Kyber Launcher", MB_OK);
         return;
@@ -272,8 +274,7 @@ int WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int n
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    //DownloadDLL();
-    kyberDllPath = std::filesystem::temp_directory_path() / "Kyber" / "Kyber.dll";
+    kyberDllPath = std::filesystem::current_path() / "Kyber.dll";
     std::string kyberDllPathStr = kyberDllPath.u8string();
 
     while (!glfwWindowShouldClose(window))

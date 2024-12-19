@@ -35,7 +35,7 @@ public:
     void InitializeGamePatches();
     void InitializeGameSettings();
 
-    void Start(const char* level, const char* mode, int maxPlayers, SocketSpawnInfo info);
+    void Start(const char* level, const char* mode, int maxPlayers);
     void Stop();
 
     void SetPlayerTeam(ServerPlayer* player, int teamId)

@@ -15,11 +15,15 @@ namespace Kyber
 {
 ServerWindow::ServerWindow() {
     g_program->m_api->GetProxies([&](std::optional<std::vector<KyberProxy>> kyberProxies) {
-        std::sort(kyberProxies->begin(), kyberProxies->end(), [](const KyberProxy& a, const KyberProxy& b) {
-            return a.ping < b.ping;
-        });
-        kyberProxies->push_back(KyberProxy{ "", "", "", "No Proxy", 0 });
-        m_proxies = kyberProxies;
+        if(kyberProxies) {
+            std::sort(kyberProxies->begin(), kyberProxies->end(), [](const KyberProxy& a, const KyberProxy& b) {
+                return a.ping < b.ping;
+            });
+            kyberProxies->push_back(KyberProxy{ "", "", "", "No Proxy", 0 });
+            m_proxies = kyberProxies;
+        } else {
+            KYBER_LOG(LogLevel::Warning, "No proxies available.");
+        }
     });
 }
 
@@ -64,7 +68,7 @@ void ServerWindow::Draw()
     {
         static GameMode currentMode = { "", "Mode", {}, {} };
         static GameLevel currentLevel = { "", "Level" };
-        static KyberProxy currentProxy = m_proxies->at(0);
+        static KyberProxy currentProxy = m_proxies ? m_proxies->at(0) : KyberProxy();
         if (ImGui::BeginCombo("##modeCombo", currentMode.name))
         {
             for (int n = 0; n < IM_ARRAYSIZE(s_game_modes); n++)
@@ -136,8 +140,8 @@ void ServerWindow::Draw()
         {
             if (strcmp(currentMode.name, "Mode") != 0 && strcmp(currentLevel.name, "Level") != 0)
             {
-                g_program->m_server->Start(
-                    currentLevel.level, currentMode.mode, maxPlayers, SocketSpawnInfo(currentProxy.displayName != "No Proxy", currentProxy.ip.c_str(), "Test Server"));
+                g_program->m_server->Start(currentLevel.level, currentMode.mode, maxPlayers /*,
+                    SocketSpawnInfo(currentProxy.displayName != "No Proxy", currentProxy.ip.c_str(), "Test Server")*/);
             }
             else
             {

@@ -22,6 +22,7 @@ enum class LogLevel
     Fatal,
 
     Current = Debug
+#define KYBER_FORCE_DEBUG_LOGS 1
 };
 
 // We need this because we can't use X Macros for LogLevel (#level), or else the output will be "LogLevel::Info",
@@ -52,7 +53,7 @@ enum class LogLevel
     std::cout << ss.str();
 
 #define KYBER_LOG_INTERNAL_DEBUG(level, message)                                                                                           \
-    if (Kyber::BuildChannel::Current == Kyber::BuildChannel::Debug)                                                                        \
+    if (true /*Kyber::BuildChannel::Current == Kyber::BuildChannel::Debug*/)                                                                        \
     {                                                                                                                                      \
         STREAM_MESSAGE(KYBER_LOG_LEVEL_COLOR(level) << "[Kyber-" << KYBER_BUILD_CHANNEL_NAME << "] [" << KYBER_LOG_LEVEL_TO_STRING(level)  \
                                                     << "] [" << __FILE__ << ":" << __LINE__ << "] " << message << "\x1B[0m");              \

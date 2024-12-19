@@ -91,7 +91,7 @@ DWORD WINAPI Server::PortForwardingThread()
             {
                 // Send an empty packet to the client that wants to connect, to make the router accept the connection
                 ISocket* client = m_socketManager->m_sockets.back();
-                client->SetPeerAddress(SocketAddr(reinterpret_cast<char*>(buffer), 25100));
+                client->SetPeerAddress(SocketAddr(reinterpret_cast<char*>(buffer), 25111));
                 client->Send(buffer, 1);
                 KYBER_LOG(LogLevel::Debug, "Sent NAT packet");
             }
@@ -105,7 +105,7 @@ DWORD WINAPI Server::PortForwardingThread()
     return 0;
 }
 
-void Server::Start(const char* level, const char* mode, int maxPlayers, SocketSpawnInfo info)
+void Server::Start(const char* level, const char* mode, int maxPlayers)
 {
     EnableGameHooks();
 
@@ -128,7 +128,6 @@ void Server::Start(const char* level, const char* mode, int maxPlayers, SocketSp
     strcat_s(gameMode, strlen(mode) + 11, mode);
     gameSettings->DefaultLayerInclusion = gameMode;
 
-    m_socketSpawnInfo = info;
     g_program->ChangeClientState(ClientState_Startup);
 
     m_running = true;

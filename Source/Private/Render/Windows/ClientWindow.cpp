@@ -142,7 +142,7 @@ void ClientWindow::Draw()
         {
             SocketSpawnInfo info(false, "", "");
             clientSettings->ServerIp = address;
-            g_program->m_server->m_natClient->Send(reinterpret_cast<uint8_t*>(address), strlen(address) + 1);
+            //g_program->m_server->m_natClient->Send(reinterpret_cast<uint8_t*>(address), strlen(address) + 1);
             g_program->m_server->m_socketSpawnInfo = info;
             g_program->m_joining = true;
             g_program->ChangeClientState(ClientState_Startup);
