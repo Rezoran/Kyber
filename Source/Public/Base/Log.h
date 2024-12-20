@@ -22,7 +22,6 @@ enum class LogLevel
     Fatal,
 
     Current = Debug
-#define KYBER_FORCE_DEBUG_LOGS 1
 };
 
 // We need this because we can't use X Macros for LogLevel (#level), or else the output will be "LogLevel::Info",

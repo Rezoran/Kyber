@@ -198,7 +198,6 @@ DWORD WINAPI Program::InitializationThread()
                 {
                     gameSettings->DifficultyIndex = 1;
                     KYBER_LOG(LogLevel::Warning, "Nothing specified, setting to " << gameSettings->DifficultyIndex);
-                    continue;
                 }
                 else
                 {
